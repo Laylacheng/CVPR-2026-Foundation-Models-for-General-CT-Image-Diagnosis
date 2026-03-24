@@ -81,3 +81,6 @@ Chest / Abdomen / Head / PET / Others
 格式：
 
 dataset    anatomy    file_path
+
+<img width="821" height="333" alt="image" src="https://github.com/user-attachments/assets/d52a6aa5-132e-4baf-8aed-808e43d1bf74" />
+
