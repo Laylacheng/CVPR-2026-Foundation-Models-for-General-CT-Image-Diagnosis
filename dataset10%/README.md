@@ -19,14 +19,16 @@ ls train_part1 train_part2 | grep ".nii" \
 | sort -nr > pretty_counts.txt 
 ""
 
-1.pretty_counts.txt
+1.
+pretty_counts.txt
 
 紀錄每個 dataset 的數量（prefix + count）
 
 用來「辨識 dataset 名稱」，後續抽樣比例的依據
 
 
-2.build_file_list.py 整理原始資料 → 建立標準清單
+2.
+build_file_list.py 整理原始資料 → 建立標準清單
 
 掃描 train_part1、train_part2
 
@@ -40,7 +42,8 @@ ls train_part1 train_part2 | grep ".nii" \
 內容格式：dataset_name  file_path
 
 
-3.all_files.txt 所有資料的「索引清單」
+3.
+all_files.txt 所有資料的「索引清單」
 
 每一行 = 一筆資料
 
@@ -49,7 +52,8 @@ ls train_part1 train_part2 | grep ".nii" \
 是 sampling 的輸入
 
 
-4.sampling.py 核心抽樣邏輯（Anatomy-aware Sampling）
+4.
+sampling.py 核心抽樣邏輯（Anatomy-aware Sampling）
 
 dataset 正規化
 
@@ -76,7 +80,8 @@ Chest / Abdomen / Head / PET / Others
 補齊或減少 並確保總數 = 1082
 
 
-5.coreset_1082.txt 最終抽樣結果
+5.
+coreset_1082.txt 最終抽樣結果
 
 格式：
 
