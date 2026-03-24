@@ -10,6 +10,7 @@ sampling.py
         ↓
 coreset_1082.txt
 
+
 ""
 ls train_part1 train_part2 | grep ".nii" \
 | sed 's/[0-9].*//' \
@@ -17,8 +18,11 @@ ls train_part1 train_part2 | grep ".nii" \
 | uniq -c \
 | sort -nr > pretty_counts.txt 
 ""
+
 1.pretty_counts.txt
+
 紀錄每個 dataset 的數量（prefix + count）
+
 用來「辨識 dataset 名稱」，後續抽樣比例的依據
 
 2.build_file_list.py 整理原始資料 → 建立標準清單
