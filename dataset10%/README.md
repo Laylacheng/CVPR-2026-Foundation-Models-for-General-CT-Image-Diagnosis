@@ -1,13 +1,21 @@
 # Anatomy-aware Sampling Pipeline
 
 pretty_counts.txt
+
         ↓
+        
 build_file_list.py
+
         ↓
+        
 all_files.txt
+
         ↓
+        
 sampling.py
+
         ↓
+        
 coreset_1082.txt
 
 
