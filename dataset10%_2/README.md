@@ -1,69 +1,72 @@
 # Anatomy-aware Sampling Pipeline
-python count_groups.py  (統計每個資料集 prefix 數量)
 
-        ↓
-        
-pretty_counts.txt (用途: 之後 build_file_list.py 會用這些 prefix 判斷每個 .nii.gz 檔案屬於哪個 dataset。)
+```
+python count_groups.py  (count the number of files per dataset prefix)
 
-        ↓
-        
+↓
+
+pretty_counts.txt  (used by build_file_list.py to identify which dataset each .nii.gz file belongs to, based on prefix)
+
+↓
+
 build_file_list.py
 
-        ↓
-        
+↓
+
 all_files.txt
 
-        ↓
-        
-sampling.py (第一層：手動指定五大 anatomy 數量 ， 第二層：每個 anatomy 裡面的 dataset 平均抽樣)
+↓
 
-        ↓
-        
+sampling.py  (Layer 1: manually specify target counts for five anatomy groups; Layer 2: uniform sampling across datasets within each anatomy group)
+
+↓
+
 coreset_1082.txt
+```
 
-
-""
+```bash
 ls train_part1 train_part2 | grep ".nii" \
 | sed 's/[0-9].*//' \
 | sort \
 | uniq -c \
-| sort -nr > pretty_counts.txt 
-""
+| sort -nr > pretty_counts.txt
+```
 
-# 1.pretty_counts.txt
+---
 
-紀錄每個 dataset 的數量（prefix + count）
+## 1. pretty_counts.txt
 
-用來「辨識 dataset 名稱」，後續抽樣比例的依據
+Records the file count per dataset (prefix + count).
 
+Used to **identify dataset names** and serves as the basis for determining sampling proportions.
 
-# 2.build_file_list.py 整理原始資料 → 建立標準清單
+---
 
-掃描 train_part1、train_part2
+## 2. build_file_[list.py](http://list.py) — Organize raw data → Build a standardized file list
 
-根據 pretty_counts.txt 判斷每個檔案屬於哪個 dataset
+- Scans `train_part1` and `train_part2`
+- Uses `pretty_counts.txt` to determine which dataset each file belongs to
+- Produces a unified format
 
-產生統一格式
+**Output:** `all_files.txt`
 
+**Format:** `dataset_name  file_path`
 
-輸出：all_files.txt
+---
 
-內容格式：dataset_name  file_path
+## 3. all_files.txt — Index list of all data
 
+- Each line = one data entry
+- Already organized with dataset name and file path
+- Serves as the input to the sampling step
 
-# 3.all_files.txt 所有資料的「索引清單」
+---
 
-每一行 = 一筆資料
+## 4. [sampling.py](http://sampling.py) — Core sampling logic (Anatomy-aware Sampling)
 
-已經整理好 dataset + path
+**Layer 1:** Manually specify target counts for five anatomy groups
 
-是 sampling 的輸入
-
-
-# 4.sampling.py 核心抽樣邏輯（Anatomy-aware Sampling）
-
-第一層：手動指定五大 anatomy 數量
-
+```python
 ANATOMY_TARGETS = {
     "Abdomen": 532,
     "Chest": 250,
@@ -71,7 +74,6 @@ ANATOMY_TARGETS = {
     "PET": 100,
     "Others": 100,
 }
+```
 
-第二層：每個 anatomy 裡面的 dataset 平均抽樣
-
-
+**Layer 2:** Uniform sampling across datasets within each anatomy group
