@@ -2,93 +2,80 @@
 
 pretty_counts.txt
 
-        ↓
-        
+↓
 build_file_list.py
 
-        ↓
-        
+↓
 all_files.txt
 
-        ↓
-        
+↓
 sampling.py
 
-        ↓
-        
+↓
 coreset_1082.txt
-
 
 ""
 ls train_part1 train_part2 | grep ".nii" \
 | sed 's/[0-9].*//' \
 | sort \
 | uniq -c \
-| sort -nr > pretty_counts.txt 
+| sort -nr > pretty_counts.txt
+
 ""
+# 1. pretty_counts.txt
 
-# 1.pretty_counts.txt
+Records the number of each dataset (prefix + count)
 
-紀錄每個 dataset 的數量（prefix + count）
+Used to "identify dataset names", the basis for subsequent sampling ratios
 
-用來「辨識 dataset 名稱」，後續抽樣比例的依據
+# 2. build_file_list.py Organizes raw data → Creates a standard list
 
+Scans train_part1, train_part2
 
-# 2.build_file_list.py 整理原始資料 → 建立標準清單
+Determines which file belongs to each file based on pretty_counts.txt Dataset
 
-掃描 train_part1、train_part2
+Generates a unified format
 
-根據 pretty_counts.txt 判斷每個檔案屬於哪個 dataset
+Output: all_files.txt
 
-產生統一格式
+Content format: dataset_name file_path
 
+# 3. all_files.txt An "index list" of all data
 
-輸出：all_files.txt
+Each line = one data entry
 
-內容格式：dataset_name  file_path
+The dataset + path has been organized
 
+It is the input for sampling
 
-# 3.all_files.txt 所有資料的「索引清單」
+# 4. sampling.py Core sampling logic (Anatomy-aware Sampling)
 
-每一行 = 一筆資料
+Dataset normalization
 
-已經整理好 dataset + path
+Merge subclasses such as psma and autoPET
 
-是 sampling 的輸入
-
-
-# 4.sampling.py 核心抽樣邏輯（Anatomy-aware Sampling）
-
-dataset 正規化
-
-合併 psma、autoPET 等子類
-
-
-分成 anatomy（第一層）
+Divide into anatomy (first level)
 
 Chest / Abdomen / Head / PET / Others
 
-計算每個 anatomy 要抽多少
+Calculate how many samples to take from each anatomy
 
-依比例分配
+Distribute proportionally
 
-用最大餘數法補齊
+Patch using the maximum remainder method
 
+Re-divide into datasets within the anatomy (second level)
 
-在 anatomy 內再分 dataset（第二層）
+Maintain dataset proportions
 
-保持 dataset 比例
+Random sampling
 
-隨機抽樣
+Patch or reduce and ensure total = 1082
 
-補齊或減少 並確保總數 = 1082
+# 5. coreset_1082.txt Final sampling result
 
+Format:
 
-# 5.coreset_1082.txt 最終抽樣結果
-
-格式：
-
-dataset    anatomy    file_path
+dataset anatomy    file_path
 
 <img width="821" height="333" alt="image" src="https://github.com/user-attachments/assets/d52a6aa5-132e-4baf-8aed-808e43d1bf74" />
-
